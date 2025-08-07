@@ -1,5 +1,6 @@
 name: Test
 "on":
+  workflow_dispatch:
   pull_request:
     branches:
       - "spec-**"
@@ -13,8 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install deps
-        run: sudo apt install yamllint
+      - name: Install yamllint
+        uses: jaxxstorm/action-install-gh-release@6096f2a2bbfee498ced520b6922ac2c06e990ed2 # v2.1.0
+        with:
+          repo: adrienverge/yamllint
+          tag: v1.37.1
+          cache: enable
 
       - name: Lint schemes
         run: yamllint ${{ github.workspace }} && ${{ github.workspace }}/scripts/lint "${{ github.workspace }}"
